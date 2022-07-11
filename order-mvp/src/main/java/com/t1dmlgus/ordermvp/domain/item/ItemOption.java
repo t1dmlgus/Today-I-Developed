@@ -22,6 +22,12 @@ public class ItemOption {
     @JoinColumn(name = "itemOptionGroup_id")
     private ItemOptionGroup itemOptionGroup;
 
+    public ItemOption(String itemOptionName, Long itemOptionPrice) {
+
+        this.itemOptionName = itemOptionName;
+        this.itemOptionPrice = itemOptionPrice;
+    }
+
 
     //    @Enumerated(EnumType.STRING)
 //    public OptionType optionType;
