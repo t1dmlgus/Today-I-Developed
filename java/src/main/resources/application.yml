@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+  datasource:
+    url: jdbc:h2:mem:factory-pattern
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+
+
+
+
+
+
