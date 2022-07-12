@@ -2,5 +2,5 @@ package com.t1dmlgus.ordermvp.service.item;
 
 public interface ItemService {
 
-    void registerItem(ItemCommand itemCommand);
+    void registerItem(ItemCommand.RegisterItemRequest itemCommand);
 }

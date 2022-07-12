@@ -1,5 +1,6 @@
 package com.t1dmlgus.ordermvp.service.item;
 
+import com.t1dmlgus.ordermvp.domain.item.Item;
 import com.t1dmlgus.ordermvp.domain.item.ItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,10 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public void registerItem(ItemCommand itemCommand) {
+    public void registerItem(ItemCommand.RegisterItemRequest itemCommand) {
 
-        var item = itemCommand.toEntity();
-        itemRepository.save(item);
+        Item item = itemCommand.toEntity();
+        Item savedItem = itemRepository.save(item);
     }
 
 

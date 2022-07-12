@@ -2,28 +2,31 @@ package com.t1dmlgus.ordermvp.persistence.item;
 
 
 import com.t1dmlgus.ordermvp.service.item.ItemService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 public class ItemController {
 
     private final ItemService itemService;
-
-    public ItemController(ItemService service) {
-        this.itemService = service;
-    }
+    private final ItemDtoMapper itemDtoMapper;
 
 
     @PostMapping("/api/v1/items")
-    public void registerItem(@RequestBody ItemDto ItemDto) {
+    public void registerItem(@RequestBody ItemDto.RegisterItemRequest request) {
 
-        log.info("ItemDto {}",ItemDto);
+        log.info("ItemDto {}",request);
 
-//        itemService.registerItem(itemCommand);
+        log.info(">>>> mapper 적용 후");
+        var itemCommand = itemDtoMapper.of(request);
+        System.out.println("itemCommand = " + itemCommand);
+
+        itemService.registerItem(itemCommand);
 
     }
 }

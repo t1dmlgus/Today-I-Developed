@@ -5,27 +5,31 @@ import lombok.ToString;
 
 import java.util.List;
 
-@ToString
-@Getter
-public class ItemDto {
 
-    private String itemName;
-    private String itemPrice;
-    private List<ItemOptionGroup> itemOptionGroups;
+public class ItemDto {
 
     @ToString
     @Getter
-    public static class ItemOptionGroup {
+    public static class RegisterItemRequest{
+        private String itemName;
+        private String itemPrice;
+        private List<RegisterItemOptionGroup> itemOptionGroupList;
+    }
 
-        private List<ItemOption> itemOptions;
+    @ToString
+    @Getter
+    public static class RegisterItemOptionGroup {
+
+        private List<RegisterItemOption> itemOptionList;
         private String itemOptionGroupName;
     }
 
     @ToString
     @Getter
-    public static class ItemOption {
+    public static class RegisterItemOption {
 
         private String itemOptionPrice;
         private String itemOptionName;
     }
+
 }
