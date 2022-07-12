@@ -18,10 +18,8 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public void registerItem(ItemCommand.RegisterItemRequest itemCommand) {
 
-        var item = itemCommand.toEntity();
-        Item save = itemRepository.save(item);
-
-        System.out.println("save = " + save);
+        Item item = itemCommand.toEntity();
+        Item savedItem = itemRepository.save(item);
     }
 
 

@@ -2,10 +2,12 @@ package com.t1dmlgus.ordermvp.domain.item;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 
+@ToString(exclude = "itemOptionGroup")
 @NoArgsConstructor
 @Getter
 @Entity
@@ -28,15 +30,7 @@ public class ItemOption {
         this.itemOptionPrice = itemOptionPrice;
     }
 
-
-    //    @Enumerated(EnumType.STRING)
-//    public OptionType optionType;
-//
-//
-//    @Getter
-//    @RequiredArgsConstructor
-//    public enum OptionType{
-//        COLOR("색상"), SIZE("사이즈");
-//        private final String description;
-//    }
+    public void setItemOptionGroup(ItemOptionGroup itemOptionGroup) {
+        this.itemOptionGroup = itemOptionGroup;
+    }
 }

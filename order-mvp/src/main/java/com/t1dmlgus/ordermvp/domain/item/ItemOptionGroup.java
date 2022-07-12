@@ -1,14 +1,14 @@
 package com.t1dmlgus.ordermvp.domain.item;
 
-import com.t1dmlgus.ordermvp.service.item.ItemCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@ToString(exclude = "item")
 @NoArgsConstructor
 @Getter
 @Entity
@@ -27,14 +27,22 @@ public class ItemOptionGroup {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemOptionGroup")
     private List<ItemOption> itemOptions = new ArrayList<>();
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
-    public ItemOptionGroup(String itemOptionGroupName, List<ItemCommand.RegisterItemOptionRequest> itemOptionRequestList) {
+    public ItemOptionGroup(String itemOptionGroupName, List<ItemOption> itemOptions) {
 
-        List<ItemOption> collect = itemOptionRequestList.stream()
-                .map(i -> new ItemOption(i.getItemOptionName(), Long.valueOf(i.getItemOptionPrice())))
-                .collect(Collectors.toList());
         this.itemOptionGroupName = itemOptionGroupName;
-        this.itemOptions = collect;
+        this.itemOptions = itemOptions;
 
+        // 연관관계 추가
+        addItemOption(itemOptions);
+    }
+
+    private void addItemOption(List<ItemOption> itemOptions) {
+        for (ItemOption itemOption : itemOptions) {
+            itemOption.setItemOptionGroup(this);
+        }
     }
 }

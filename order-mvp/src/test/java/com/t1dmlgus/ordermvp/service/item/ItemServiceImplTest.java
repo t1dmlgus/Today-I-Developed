@@ -38,24 +38,17 @@ class ItemServiceImplTest {
          * - 어차피 물품은 색상과 사이즈 둘다 필요 -> 미리 생성해도 나쁘지 않을 거 같음
          * - 넘어오는 json 데이터를 토대로 new itemOption 생성
          *
-         *
-         *
-         *
          */
 
+        //then
+    }
 
+    @DisplayName("아이템 등록 실패 테스트 >> 예외처리")
+    @Test
+    void registerItemFail() {
 
+        // given
 
-//        new Item()
-//
-//                // 미리 있어야 한다.
-//        new ItemOption()
-//        new ItemOption()
-//
-//
-//
-//        // when
-//        itemService.registerItem();
 
         //then
     }

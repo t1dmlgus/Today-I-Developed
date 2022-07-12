@@ -1,7 +1,6 @@
 package com.t1dmlgus.ordermvp.persistence.item;
 
 
-import com.t1dmlgus.ordermvp.service.item.ItemCommand;
 import com.t1dmlgus.ordermvp.service.item.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

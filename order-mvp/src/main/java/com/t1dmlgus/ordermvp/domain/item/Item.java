@@ -1,14 +1,13 @@
 package com.t1dmlgus.ordermvp.domain.item;
 
 import com.t1dmlgus.ordermvp.domain.AbstractEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @NoArgsConstructor
 @Getter
 @Entity
@@ -22,20 +21,31 @@ public class Item extends AbstractEntity {
     private Long itemPrice;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private List<ItemOptionGroup> ItemOptionGroups = new ArrayList<>();
+    private List<ItemOptionGroup> itemOptionGroups = new ArrayList<>();
 
     @Builder
-    private Item(String itemName, Long itemPrice, List<ItemOptionGroup> ItemOptionGroups) {
+    public Item(String itemName, Long itemPrice, List<ItemOptionGroup> itemOptionGroups) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.ItemOptionGroups = ItemOptionGroups;
+        this.itemOptionGroups = itemOptionGroups;
+        // 연관관계 추가
+        addItemOptionGroup(itemOptionGroups);
     }
 
-    public static Item newInstance(String itemName, Long itemPrice, List<ItemOptionGroup> ItemOptionGroups){
+    private void addItemOptionGroup(List<ItemOptionGroup> itemOptionGroups) {
+        for (ItemOptionGroup itemOptionGroup : itemOptionGroups) {
+            itemOptionGroup.setItem(this);
+        }
+    }
+
+
+
+
+    public static Item newInstance(String itemName, Long itemPrice, List<ItemOptionGroup> itemOptionGroups){
         return Item.builder()
                 .itemName(itemName)
                 .itemPrice(itemPrice)
-                .ItemOptionGroups(ItemOptionGroups)
+                .itemOptionGroups(itemOptionGroups)
                 .build();
     }
 }
