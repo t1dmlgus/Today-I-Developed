@@ -1,4 +1,4 @@
-package com.t1dmlgus.ordermvp.common;
+package com.t1dmlgus.ordermvp.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
