@@ -26,9 +26,8 @@
 
 
 
+
 ## ResponseEngity<? \ Object>
 
 ## 제네릭 타입
-
--> 블로그 정리
 
