@@ -1,5 +1,6 @@
 package com.t1dmlgus.ordermvp.persistence.member;
 
+import com.t1dmlgus.ordermvp.service.member.MemberCommand;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 public class MemberDto {
+
 
     @NotBlank(message = "username 은 필수값입니다.")
     private String username;
@@ -19,5 +21,7 @@ public class MemberDto {
     private String password;
 
 
-
+    public MemberCommand toCommand(){
+        return MemberCommand.of(username, email, password);
+    }
 }
