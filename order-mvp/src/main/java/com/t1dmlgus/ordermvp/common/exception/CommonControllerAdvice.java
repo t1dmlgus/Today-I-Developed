@@ -1,6 +1,7 @@
 package com.t1dmlgus.ordermvp.common.exception;
 
 
+import com.t1dmlgus.ordermvp.common.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,11 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class CommonControllerAdvice {
 
-
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Object> methodArgumentNotValidationException(MethodArgumentNotValidException e, HttpServletRequest httpServletRequest) {
 
         ErrorResponse response = ErrorResponse.of(ErrorType.INVALID_PARAMETER, e.getBindingResult(), httpServletRequest);
-        return ResponseEntity.status(ErrorType.INVALID_PARAMETER.getHttpStatus()).body(response);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<Object> userNotFoundException(UserNotFoundException e, HttpServletRequest httpServletRequest) {
+
+        ErrorResponse response = ErrorResponse.of(e.getErrorType(), httpServletRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }

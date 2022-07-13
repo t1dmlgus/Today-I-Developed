@@ -34,7 +34,11 @@ public class Member extends AbstractEntity {
     }
 
     public static Member newInstance(String username, String email, String password) {
-        return new Member(username, email, password);
+        return Member.builder()
+                .username(username)
+                .email(email)
+                .password(password)
+                .build();
     }
 
 
