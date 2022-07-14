@@ -21,8 +21,8 @@ public class CommonControllerAdvice {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @ExceptionHandler(value = UserNotFoundException.class)
-    public ResponseEntity<Object> userNotFoundException(UserNotFoundException e, HttpServletRequest httpServletRequest) {
+    @ExceptionHandler(value = BusinessException.class)
+    public ResponseEntity<Object> BusinessException(BusinessException e, HttpServletRequest httpServletRequest) {
 
         ErrorResponse response = ErrorResponse.of(e.getErrorType(), httpServletRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);
