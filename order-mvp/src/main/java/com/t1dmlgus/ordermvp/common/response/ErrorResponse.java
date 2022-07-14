@@ -50,8 +50,8 @@ public class ErrorResponse {
     public static ErrorResponse of(ErrorType errorType, HttpServletRequest httpServletRequest){
 
         return ErrorResponse.builder()
-                .statusCode(errorType.getHttpStatus())
                 .requestUrl(httpServletRequest.getRequestURI())
+                .statusCode(errorType.getHttpStatus())
                 .errorCode(errorType.getCode())
                 .errorMessage(errorType.getMessage())
                 .errorFields(new ArrayList<>())
