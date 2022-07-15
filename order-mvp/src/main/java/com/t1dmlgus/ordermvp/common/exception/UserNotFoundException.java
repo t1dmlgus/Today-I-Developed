@@ -3,11 +3,8 @@ package com.t1dmlgus.ordermvp.common.exception;
 import lombok.Getter;
 
 @Getter
-public class UserNotFoundException extends RuntimeException{
-
-    private final ErrorType errorType;
-
+public class UserNotFoundException extends BusinessException{
     public UserNotFoundException() {
-        this.errorType = ErrorType.USER_NOT_FOUND;
+        super(ErrorType.USER_ENTITY_NOT_FOUND);
     }
 }

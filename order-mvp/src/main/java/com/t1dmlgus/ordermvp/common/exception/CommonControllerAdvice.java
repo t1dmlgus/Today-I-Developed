@@ -17,7 +17,7 @@ public class CommonControllerAdvice {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Object> methodArgumentNotValidationException(MethodArgumentNotValidException e, HttpServletRequest httpServletRequest) {
 
-        ErrorResponse response = ErrorResponse.of(ErrorType.INVALID_PARAMETER, e.getBindingResult(), httpServletRequest);
+        ErrorResponse response = ErrorResponse.of(ErrorType.COMMON_INVALID_PARAMETER, e.getBindingResult(), httpServletRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 

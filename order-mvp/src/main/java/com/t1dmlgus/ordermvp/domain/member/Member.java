@@ -1,12 +1,15 @@
 package com.t1dmlgus.ordermvp.domain.member;
 
 import com.t1dmlgus.ordermvp.domain.AbstractEntity;
+import com.t1dmlgus.ordermvp.domain.item.Item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -24,13 +27,12 @@ public class Member extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     @Builder
-    private Member(String username, String email, String password) {
+    public Member(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = Role.USER;
+        this.role = role;
     }
 
     public static Member newInstance(String username, String email, String password) {
@@ -38,6 +40,7 @@ public class Member extends AbstractEntity {
                 .username(username)
                 .email(email)
                 .password(password)
+                .role(Role.USER)
                 .build();
     }
 

@@ -3,6 +3,7 @@ package com.t1dmlgus.ordermvp.service.item;
 import com.t1dmlgus.ordermvp.domain.item.Item;
 import com.t1dmlgus.ordermvp.domain.item.ItemOption;
 import com.t1dmlgus.ordermvp.domain.item.ItemOptionGroup;
+import com.t1dmlgus.ordermvp.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,16 +18,16 @@ public class ItemCommand {
     public static class RegisterItemRequest{
         private final String itemName;
         private final Long itemPrice;
+        private final Long memberId;
 
         private final List<RegisterItemOptionGroupRequest> itemOptionGroupRequestList;
 
-        public Item toEntity(){
-            List<ItemOptionGroup> collect = itemOptionGroupRequestList.stream()
+        public Item toEntity(Member member){
+            List<ItemOptionGroup> itemOptionGroups = itemOptionGroupRequestList.stream()
                     .map(RegisterItemOptionGroupRequest::toItemOptionGroupEntity)
                     .collect(Collectors.toList());
 
-            //  return Item.newInstance(itemName, itemPrice, collect);
-            return new Item(itemName, itemPrice, collect);
+              return Item.newInstance(itemName, itemPrice, member, itemOptionGroups);
         }
     }
 
