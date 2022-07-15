@@ -21,8 +21,3 @@ server:
   servlet:
     session:
       timeout: 1800    #30분
-
-
-
-
-
