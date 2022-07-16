@@ -3,7 +3,6 @@ package com.t1dmlgus.ordermvp.common.iterceptor;
 import com.t1dmlgus.ordermvp.common.SessionConst;
 import com.t1dmlgus.ordermvp.common.exception.BusinessException;
 import com.t1dmlgus.ordermvp.common.exception.ErrorType;
-import com.t1dmlgus.ordermvp.common.exception.UnAuthorizedException;
 import com.t1dmlgus.ordermvp.service.member.MemberInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;

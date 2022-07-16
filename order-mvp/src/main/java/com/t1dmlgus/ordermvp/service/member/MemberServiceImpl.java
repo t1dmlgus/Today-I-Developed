@@ -1,8 +1,7 @@
 package com.t1dmlgus.ordermvp.service.member;
 
-import com.t1dmlgus.ordermvp.common.exception.BadCredentialException;
-import com.t1dmlgus.ordermvp.common.exception.DuplicateUsernameException;
-import com.t1dmlgus.ordermvp.common.exception.UserNotFoundException;
+import com.t1dmlgus.ordermvp.common.exception.BusinessException;
+import com.t1dmlgus.ordermvp.common.exception.ErrorType;
 import com.t1dmlgus.ordermvp.domain.member.Member;
 import com.t1dmlgus.ordermvp.domain.member.MemberRepository;
 import com.t1dmlgus.ordermvp.persistence.member.MemberDto;
@@ -26,7 +25,7 @@ public class MemberServiceImpl implements MemberService{
 
         boolean existsByUsername = memberRepository.existsByUsername(member.getUsername());
         if(existsByUsername)
-            throw new DuplicateUsernameException();
+            throw new BusinessException(ErrorType.DUPLICATED_USERNAME);
         memberRepository.save(member);
     }
 
@@ -34,9 +33,10 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberInfo signIn(MemberDto.signin signIn) {
 
+
         Member member = memberRepository.findByUsername(signIn.getUsername())
                 .filter(m -> m.getPassword().equals(signIn.getPassword()))
-                .orElseThrow(BadCredentialException::new);
+                .orElseThrow(()->new BusinessException(ErrorType.BAD_CREDENTIALS));
 
         return MemberInfo.of(member);
     }
@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService{
     public MemberInfo getMemberInfo(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(()-> new BusinessException(ErrorType.USER_ENTITY_NOT_FOUND));
         return MemberInfo.of(member);
     }
 

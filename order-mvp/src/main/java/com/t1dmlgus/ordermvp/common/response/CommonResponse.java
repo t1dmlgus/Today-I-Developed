@@ -5,18 +5,21 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.util.Collections;
+import java.util.List;
+
 @Getter
 public class CommonResponse<T> {
 
     @JsonIgnore
     private final HttpStatus statusCode;
     private final String message;
-    private final T data;
+    private final List<T> data;
     private final ResultCode result = ResultCode.SUCCESS;
 
     @Builder
-    private CommonResponse(String message, T data) {
-        statusCode = HttpStatus.OK;
+    public CommonResponse(String message, List<T> data) {
+        this.statusCode = HttpStatus.OK;
         this.message = message;
         this.data = data;
     }
@@ -24,13 +27,14 @@ public class CommonResponse<T> {
     public static <T> CommonResponse<T> of(T data, String message){
         return CommonResponse.<T>builder()
                 .message(message)
-                .data(data)
+                .data(Collections.singletonList(data))
                 .build();
     }
 
     public static <T> CommonResponse<T> of(String message){
         return CommonResponse.<T>builder()
                 .message(message)
+                .data(Collections.emptyList())
                 .build();
     }
 }
