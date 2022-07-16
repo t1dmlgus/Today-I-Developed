@@ -52,16 +52,6 @@ public class Item extends AbstractEntity {
         this.member = member;
     }
 
-//    @Builder
-//    public Item(String itemName, Long itemPrice, List<ItemOptionGroup> itemOptionGroups) {
-//        this.itemName = itemName;
-//        this.itemPrice = itemPrice;
-//        this.itemOptionGroups = itemOptionGroups;
-//        this.status =
-//
-//        // 연관관계 추가
-//        addItemOptionGroup(itemOptionGroups);
-//    }
 
     private void addItemToItemOptionGroup(List<ItemOptionGroup> itemOptionGroups) {
         for (ItemOptionGroup itemOptionGroup : itemOptionGroups) {
@@ -79,6 +69,7 @@ public class Item extends AbstractEntity {
                 .member(member)
                 .build();
 
+        // 연관관계 추가(itemOptionGroup)
         item.addItemToItemOptionGroup(itemOptionGroups);
         return item;
     }

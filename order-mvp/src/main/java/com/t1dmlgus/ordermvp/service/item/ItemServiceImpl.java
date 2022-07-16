@@ -1,6 +1,7 @@
 package com.t1dmlgus.ordermvp.service.item;
 
 import com.t1dmlgus.ordermvp.common.exception.BusinessException;
+import com.t1dmlgus.ordermvp.common.exception.EntityNotFoundException;
 import com.t1dmlgus.ordermvp.common.exception.ErrorType;
 import com.t1dmlgus.ordermvp.domain.item.Item;
 import com.t1dmlgus.ordermvp.domain.item.ItemRepository;
@@ -30,11 +31,18 @@ public class ItemServiceImpl implements ItemService{
 
         Member member = memberRepository.findById(itemCommand.getMemberId())
                 .orElseThrow(()-> new BusinessException(ErrorType.USER_ENTITY_NOT_FOUND));
-        Item item = itemCommand.toEntity(member);
+        Item item = itemCommand.toItem(member);
 
         Item savedItem = itemRepository.save(item);
     }
 
+    @Transactional
+    @Override
+    public ItemInfo getItemDetails(Long itemId) {
 
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorType.ITEM_ENTITY_NOT_FOUND));
 
+        return ItemInfo.of(item);
+    }
 }
