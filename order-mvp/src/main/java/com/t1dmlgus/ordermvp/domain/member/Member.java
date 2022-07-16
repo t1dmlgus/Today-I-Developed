@@ -1,15 +1,12 @@
 package com.t1dmlgus.ordermvp.domain.member;
 
 import com.t1dmlgus.ordermvp.domain.AbstractEntity;
-import com.t1dmlgus.ordermvp.domain.item.Item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter

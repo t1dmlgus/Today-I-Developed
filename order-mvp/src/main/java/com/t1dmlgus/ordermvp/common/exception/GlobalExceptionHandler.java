@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestControllerAdvice
-public class CommonControllerAdvice {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Object> methodArgumentNotValidationException(MethodArgumentNotValidException e, HttpServletRequest httpServletRequest) {
