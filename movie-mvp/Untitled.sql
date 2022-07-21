@@ -95,10 +95,14 @@ add FOREIGN KEY (movie_id) REFERENCES movies (movie_id);
 
 select * from movies;
 
-INSERT INTO movies (movie_title, running_time)
+INSERT INTO movies (title, running_time)
 values("토르 러브엔썬더", 128);
-INSERT INTO movies (movie_title, running_time)
+INSERT INTO movies (title, running_time)
 values("브로커", 152);
+INSERT INTO movies (title, running_time)
+values("미니언즈2", 92);
+INSERT INTO movies (title, running_time)
+values("외계+인 1부", 138);
 
 
 select * from theaters;
@@ -107,6 +111,8 @@ INSERT INTO theaters(theater_name)
 values("안양 롯데시네마");
 INSERT INTO theaters(theater_name)
 values("범계 롯데시네마");
+INSERT INTO theaters(theater_name)
+values("신도림 롯데시네마");
 
 
 
@@ -122,12 +128,55 @@ values("special", 15000);
 
 
 select * from cinemas;
+select * from cinemas where theater_id = 1;
 
-INSERT INTO cinema_grade(grade, price)
-values("basic", 7000);
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("1상영관", 70, 1, 1);
 
-INSERT INTO cinema_grade(grade, price)
-values("special", 15000);
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("2상영관", 380, 1, 1);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("3상영관", 82, 1, 2);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("4상영관", 232, 1, 1);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("5상영관", 62, 1, 2);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("1상영관", 392, 2, 1);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("2상영관", 282, 2, 1);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("3상영관", 198, 2, 1);
+
+INSERT INTO cinemas(cinema_name, chairs, theater_id, cinema_grade_id)
+values("1상영관", 72, 3, 2);
+
+
+
+
+select * from screens;
+
+# 좌석 수, 해당 상영관보다 클 경우 에러(계산 로직 필요)
+INSERT INTO screens(round, extra_seat, cinema_id, movie_id)
+values(1, 58, 1, 1);
+
+INSERT INTO screens(round, extra_seat, cinema_id, movie_id)
+values(1, 288, 2, 2);
+
+#...
+
+
+
+
+
+
+
 
 
 

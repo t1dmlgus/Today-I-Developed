@@ -1,10 +1,12 @@
-package dev.t1dmlgus.moviemvp.reservation;
+package dev.t1dmlgus.moviemvp.reservation.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
+@ToString
 @NoArgsConstructor(force = true)
 @Getter
 @Table(name = "movies")

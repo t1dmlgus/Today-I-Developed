@@ -1,12 +1,12 @@
-package dev.t1dmlgus.moviemvp.reservation;
+package dev.t1dmlgus.moviemvp.reservation.domain;
 
 
 import lombok.*;
 
 import javax.persistence.*;
 
+@ToString
 @NoArgsConstructor(force = true)
-@ToString(exclude = "theater")
 @Getter
 @Table(name = "cinemas")
 @Entity
@@ -62,20 +62,23 @@ public class Cinema {
 
 
 
-//    // 좌석선택
-//    public int seatSelection(int audience, String theaterType) {
-//        chairs -= audience;
-//        return payment(audience, theaterType);
-//    }
-//    // 결제
-//
-//    public int payment(int audience, String theaterType) {
-//
-//        if (TheaterType.SPECIAL.description.equals(theaterType)) {
-//            return TheaterType.SPECIAL.getPrice() * audience;
-//        }
-//        return TheaterType.BASIC.getPrice() * audience;
-//    }
+    // 좌석선택
+    public int seatSelection(int audience) {
+
+        // 좌석 선택 로직 구현 필요
+        return calculatePayment(audience);
+    }
+
+
+
+    // 결제 금액
+    public int calculatePayment(int audience) {
+
+        if (!this.cinemaGrade.equals(CinemaGrade.GENERAL)) {
+            return CinemaGrade.SPECIAL.getPrice() * audience;
+        }
+        return this.cinemaGrade.getPrice() * audience;
+    }
 
     // 상영관을 만드는 책임(=메소드)
 

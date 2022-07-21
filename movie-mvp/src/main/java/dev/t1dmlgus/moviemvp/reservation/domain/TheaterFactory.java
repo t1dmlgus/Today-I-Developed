@@ -1,4 +1,4 @@
-package dev.t1dmlgus.moviemvp.reservation;
+package dev.t1dmlgus.moviemvp.reservation.domain;
 
 public class TheaterFactory {
 

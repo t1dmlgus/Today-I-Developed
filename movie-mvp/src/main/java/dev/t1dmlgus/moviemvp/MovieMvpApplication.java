@@ -1,7 +1,5 @@
 package dev.t1dmlgus.moviemvp;
 
-import dev.t1dmlgus.moviemvp.reservation.Theater;
-import dev.t1dmlgus.moviemvp.reservation.TheaterPlace;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
