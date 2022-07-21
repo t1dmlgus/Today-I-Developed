@@ -1,11 +1,15 @@
-package dev.t1dmlgus.moviemvp.reservation;
+package dev.t1dmlgus.moviemvp.reservation.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(force = true)
+@ToString
 @Getter
 @Table(name = "screens")
 @Entity
@@ -15,33 +19,32 @@ public class Screen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long screenId;
 
-    private final String movieName;
-    private final int cinemaNo;
-    private final int extraSeat ;
-    private final int seat;
+    private int extraSeat ;
+
+    @ManyToOne
+    @JoinColumn(name = "cinema_id")
+    private final Cinema cinema;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private final Movie movie;                          // 영화 별
 
-    @ManyToOne
-    @JoinColumn(name = "theater_id")
-    private final Theater theater;                      // 영화관 별
+//    @ManyToOne
+//    @JoinColumn(name = "theater_id")
+//    private final Theater theater;                      // 영화관 별
 
     private final LocalDateTime startTime;              // 시간 별
 
 
     @Builder
-    private Screen(Movie movie, Theater theater,int cinemaNo, LocalDateTime startTime) {
-        this.movieName = movie.getTitle();
-        this.cinemaNo = cinemaNo;
-        this.extraSeat = theater.getCinemas().get(cinemaNo).getChairs();
-        this.seat = theater.getCinemas().get(cinemaNo).getChairs();
+    public Screen(Movie movie, Cinema cinema, LocalDateTime startTime) {
+        this.extraSeat = cinema.getChairs();
+        this.cinema = cinema;
         this.movie = movie;
-        this.theater = theater;
         this.startTime = startTime;
     }
-//
+
+    //
 //    public void initScreen(Theater theater, Movie movie) {
 //        int round = 5;  // 회차
 //        // 시간
@@ -58,16 +61,16 @@ public class Screen {
 //    }
 
     // 금일 상영시간표 생성
-    public static Screen todayScreenInitByTheater(Theater theater, Movie movie, int cinemaNo, LocalDateTime localDateTime) {
-
-        return Screen.builder()
-                .theater(theater)
-                .movie(movie)
-                .cinemaNo(cinemaNo)
-                .startTime(localDateTime)
-                .build();
-
-    }
+//    public static Screen todayScreenInitByTheater(Theater theater, Movie movie, int cinemaNo, LocalDateTime localDateTime) {
+//
+//        return Screen.builder()
+//                .theater(theater)
+//                .movie(movie)
+//                .cinemaNo(cinemaNo-1)
+//                .startTime(localDateTime)
+//                .build();
+//
+//    }
 
 
 //
@@ -79,7 +82,18 @@ public class Screen {
 //    }
 
 
-    public void reservation(int audience, String theaterType, String name, int round, String movieTile){
+    public Reservation reservation(int audience){
+
+        // 결제금액
+        int totalPriceOfAudience = this.getCinema().seatSelection(audience);
+
+        // 변경감지 **
+
+        // 잔여좌석
+        extraSeat -= audience;
+        // 예매생성
+        return new Reservation(audience, this, totalPriceOfAudience);
+
 
 //        theater = Theater.getTheater(name);         // 영화관 선택
 //        movie = Movie.getMovie(movieTile);          // 영화 선택
@@ -94,7 +108,6 @@ public class Screen {
 
         // 초기화
         //initScreen(theater, movie);
-
 //        new Reservation(audience, screen, chairPayment);
     }
 }

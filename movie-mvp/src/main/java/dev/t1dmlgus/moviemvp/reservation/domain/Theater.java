@@ -1,4 +1,4 @@
-package dev.t1dmlgus.moviemvp.reservation;
+package dev.t1dmlgus.moviemvp.reservation.domain;
 
 
 import lombok.Builder;
@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"cinemas", "screens"})
 @Getter
 @Entity
 @Table(name = "theaters")
@@ -30,6 +31,9 @@ public class Theater {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "theater")
     private List<Cinema> cinemas = new ArrayList<>();
 
+    @OneToMany
+    private List<Screen> screens = new ArrayList<>();
+
     public static HashMap<String, Theater> theaterInstance = new HashMap<>();
 
     @Builder
@@ -45,6 +49,7 @@ public class Theater {
                 .cinemas(cinemas)
                 .build();
 
+        theaterInstance.put(theaterName, theater);
         theater.addTheaterToCinema(cinemas);
         return theater;
     }
@@ -82,8 +87,35 @@ public class Theater {
 //    }
 
 
-    public void todayScreenList(List<ScreenDtos> screenDtos) {
 
+    // 오늘의 상영리스트를 만들어라(영화관 별)
+    public List<Screen> todayScreen(ScreenDtos screenDtos, List<Movie> movies) {
+        // 상영날짜
+        String date = screenDtos.getDate();
+
+        // 상영영화
+        for (ScreenDtos.MovieDto movieDto : screenDtos.getMovieDtos()) {
+            String movieTitle = movieDto.getMovieTitle();
+            Movie movie = movies.stream().filter(i -> i.getTitle().equals(movieTitle)).findFirst()
+                    .orElseThrow(RuntimeException::new);
+
+            // 상영관
+            for (ScreenDtos.CinemaDetail cinemaDetail : movieDto.getCinemaDetails()) {
+                Cinema cinema = this.getCinemas().stream().filter(i -> i.getCinemaName().equals(cinemaDetail.getCinema())).findFirst()
+                        .orElseThrow(RuntimeException::new);
+
+                //상영 시간
+                LocalDateTime startTime = LocalDateTime.of(Integer.parseInt(date.substring(0, 4)),
+                        Integer.parseInt(date.substring(4, 6)),
+                        Integer.parseInt(date.substring(6)),
+                        Integer.parseInt(cinemaDetail.getStartTime().substring(0, 2)),
+                        Integer.parseInt(cinemaDetail.getStartTime().substring(2))
+                );
+
+                screens.add(new Screen(movie, cinema, startTime));
+            }
+        }
+        return screens;
 
     }
 
