@@ -1,87 +1,118 @@
 package dev.t1dmlgus.moviemvp.reservation.domain;
 
-
-import lombok.*;
+import dev.t1dmlgus.moviemvp.reservation.util.DateUtil;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-@ToString
-@NoArgsConstructor(force = true)
+
+@NoArgsConstructor
+@ToString(exclude = {"theaters", "screens"})
 @Getter
-@Table(name = "cinemas")
 @Entity
-public class Cinema {
+@Table(name = "cinemas")
+public class Cinema {       // 영화관
+
+    public static HashMap<String, Cinema> cinemaInstances = new HashMap<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cinemaId;
-    private final String cinemaName;
-    private final int chairs;
+    public Long cinemaId;
+    public String cinemaName;
 
-    @Enumerated(EnumType.STRING)
-    public CinemaGrade cinemaGrade;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
+    private List<Theater> theaters = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "theater_id")
-    private Theater theater;
-
-
-    @RequiredArgsConstructor
-    @Getter
-    public enum CinemaGrade{
-
-        GENERAL("일반관", 14000),
-        SPECIAL("특별관", 20000);
-
-        public final String description;
-        public final int price;
-    }
+    @OneToMany
+    private List<Screen> screens = new ArrayList<>();
 
 
     @Builder
-    public Cinema(String cinemaName, int chairs) {
+    private Cinema(String cinemaName, List<Theater> theaters) {
         this.cinemaName = cinemaName;
-        this.chairs = chairs;
-        this.cinemaGrade = CinemaGrade.GENERAL;
+        this.theaters = theaters;
     }
 
-    public static Cinema newInstance(String cinemaName, int chairs){
-        return Cinema.builder()
+
+    public static Cinema newInstance(String cinemaName, List<Theater> theaters) {
+        Cinema cinema = Cinema.builder()
                 .cinemaName(cinemaName)
-                .chairs(chairs)
+                .theaters(theaters)
                 .build();
+
+        cinemaInstances.put(cinemaName, cinema);
+        cinema.addTheaterToCinema(theaters);
+        return cinema;
     }
 
-    public void setTheater(Theater theater) {
-        this.theater = theater;
-    }
-
-    public void changeCinemaGrade(){
-        this.cinemaGrade = CinemaGrade.SPECIAL;
-    }
-
-
-
-    // 좌석선택
-    public int seatSelection(int audience) {
-
-        // 좌석 선택 로직 구현 필요
-        return calculatePayment(audience);
-    }
-
-
-
-    // 결제 금액
-    public int calculatePayment(int audience) {
-
-        if (!this.cinemaGrade.equals(CinemaGrade.GENERAL)) {
-            return CinemaGrade.SPECIAL.getPrice() * audience;
+    // 연관관계
+    private void addTheaterToCinema(List<Theater> theaters) {
+        for (Theater theater : theaters) {
+            theater.setCinema(this);
         }
-        return this.cinemaGrade.getPrice() * audience;
     }
 
-    // 상영관을 만드는 책임(=메소드)
+
+
+//    public static Theater getInstance(TheaterPlace theaterPlace) {
+//        // 해당 영화관이 존재할 경우 가져오고, 아니면 만듬
+//
+//        Theater theater = theaterInstance.get(theaterPlace.getPlace());
+//        if (Objects.isNull(theater)) {
+//            theater = new Theater(theaterPlace);
+//            theaterInstance.put(theaterPlace.getPlace(), theater);
+//            return theater;
+//        }
+//        return theater;
+//    }
 
 
 
+    public List<Movie> getShowingMovieFromMovie(){
+        return Movie.showingMovie;
+    }
+
+
+    // 오늘의 상영리스트를 만들어라(영화관 별)
+    public List<Screen> todayScreenInit(ScreenSchedule screenSchedule) {
+
+        // 상영리스트 초기화
+        screens.clear();
+
+        // 상영영화 가져오기
+        List<Movie> showingMovie = this.getShowingMovieFromMovie();
+
+        // 상영날짜
+        String date = screenSchedule.getDate();
+
+        // 상영영화
+        for (ScreenSchedule.ScreenOnMovie screenOnMovie : screenSchedule.getScreenOnMovies()) {
+            Movie movie = showingMovie.stream()
+                    .filter(i -> i.getTitle().equals(screenOnMovie.getMovieTitle()))
+                    .findFirst()
+                    .orElseThrow(RuntimeException::new);
+
+            // 상영관
+            for (ScreenSchedule.TheaterOfScreenMovie theaterDetail : screenOnMovie.getTheaterOfScreenMovies()) {
+                Theater theater = this.getTheaters().stream()
+                        .filter(i -> i.getTheaterName().equals(theaterDetail.getTheaterName()))
+                        .findFirst()
+                        .orElseThrow(RuntimeException::new);
+
+                //상영 시간
+                LocalDateTime startTime = DateUtil.toLocalDateTime(date, theaterDetail.getStartTime());
+                screens.add(Screen.newInstance(movie, theater, startTime));
+            }
+        }
+        // 연관관계 추가(상영시간표)
+        this.getScreens().addAll(screens);
+        return screens;
+    }
 }
