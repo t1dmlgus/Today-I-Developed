@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(force = true)
 @ToString
 @Getter
-@Table(name = "screens")
 @Entity
+@Table(name = "screens")
 public class Screen {
 
     @Id
@@ -22,8 +22,8 @@ public class Screen {
     private int extraSeat ;
 
     @ManyToOne
-    @JoinColumn(name = "cinema_id")
-    private final Cinema cinema;
+    @JoinColumn(name = "theater_id")
+    private final Theater theater;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
@@ -37,12 +37,21 @@ public class Screen {
 
 
     @Builder
-    public Screen(Movie movie, Cinema cinema, LocalDateTime startTime) {
-        this.extraSeat = cinema.getChairs();
-        this.cinema = cinema;
+    private Screen(Movie movie, Theater theater, LocalDateTime startTime) {
+        this.extraSeat = theater.getChairs();
+        this.theater = theater;
         this.movie = movie;
         this.startTime = startTime;
     }
+
+    public static Screen newInstance(Movie movie, Theater theater, LocalDateTime startTime){
+         return Screen.builder()
+                .movie(movie)
+                .theater(theater)
+                .startTime(startTime)
+                .build();
+    }
+
 
     //
 //    public void initScreen(Theater theater, Movie movie) {
@@ -85,11 +94,9 @@ public class Screen {
     public Reservation reservation(int audience){
 
         // 결제금액
-        int totalPriceOfAudience = this.getCinema().seatSelection(audience);
+        int totalPriceOfAudience = this.getTheater().seatSelection(audience);
 
-        // 변경감지 **
-
-        // 잔여좌석
+        // 잔여좌석(변경감지)
         extraSeat -= audience;
         // 예매생성
         return new Reservation(audience, this, totalPriceOfAudience);
