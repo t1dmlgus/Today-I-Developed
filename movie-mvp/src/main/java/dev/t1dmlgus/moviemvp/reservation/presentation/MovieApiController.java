@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -18,15 +20,15 @@ public class MovieApiController {
     private final MovieService movieService;
 
     @PostMapping("/api/v1/movies")
-    public ResponseEntity<CommonResponse<String>> registerMovie(@RequestBody MovieToRegisterCommand movieToRegisterCommand) {
+    public ResponseEntity<CommonResponse<String>> registerMovie(@RequestBody @Valid MovieToRegisterCommand movieToRegisterCommand) {
         movieService.registerMovie(movieToRegisterCommand);
         CommonResponse<String> response = CommonResponse.of("영화가 등록되었습니다.");
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/api/v1/movies/{movieId}/showing")
-    public ResponseEntity<CommonResponse<String>> changingShowingMovie(@PathVariable Long movieId) {
-        movieService.toShowingMovie(movieId);
+    public ResponseEntity<CommonResponse<String>> changeStatusToShowingMovie(@PathVariable Long movieId) {
+        movieService.changeStatusToShowing(movieId);
         CommonResponse<String> response = CommonResponse.of("해당 영화는 '상영중'으로 변경되었습니다.");
         return ResponseEntity.ok(response);
     }
