@@ -2,9 +2,10 @@ package dev.t1dmlgus.moviemvp.reservation.presentation;
 
 
 import dev.t1dmlgus.moviemvp.reservation.common.response.CommonResponse;
+import dev.t1dmlgus.moviemvp.reservation.domain.Movie;
 import dev.t1dmlgus.moviemvp.reservation.domain.ScreenSchedule;
+import dev.t1dmlgus.moviemvp.reservation.domain.Theater;
 import dev.t1dmlgus.moviemvp.reservation.service.*;
-import dev.t1dmlgus.moviemvp.reservation.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +25,16 @@ public class CinemaApiController {
     @PostMapping("/api/v1/cinemas")
     public ResponseEntity<CommonResponse<String>> createCinema(@RequestBody CinemaToRegisterCommand cinemaToRegisterCommand){
 
-        CinemaInfo cinemaInfo = cinemaService.createCinema(cinemaToRegisterCommand);
-        CommonResponse<String> response = CommonResponse.of("영화관 및 상영관이 등록되었습니다.");
+        CinemaInfo<Theater> cinemaInfo = cinemaService.createCinema(cinemaToRegisterCommand);
+        CommonResponse<String> response = CommonResponse.of(cinemaInfo.cinemaResponse());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/api/v1/cinemas/screens")
     public ResponseEntity<CommonResponse<String>> initTodayScreen(@RequestBody ScreenSchedule screenSchedule){
 
-        cinemaService.todayScreenInit(screenSchedule);
-        String cinemaName = screenSchedule.getCinemaName();
-        String date = screenSchedule.getDate();
-        CommonResponse<String> response = CommonResponse.of(ResponseUtil.initScreenUtil(date, cinemaName));
+        CinemaInfo<Movie> cinemaInfo = cinemaService.todayScreenInit(screenSchedule);
+        CommonResponse<String> response = CommonResponse.of(cinemaInfo.cinemaResponse());
         return ResponseEntity.ok(response);
     }
 

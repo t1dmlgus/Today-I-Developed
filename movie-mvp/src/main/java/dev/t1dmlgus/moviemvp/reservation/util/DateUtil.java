@@ -13,4 +13,23 @@ public class DateUtil {
 
         return LocalDateTime.of(year, month, day, hour, minute);
     }
+
+    public static String toLocalDateToString(LocalDateTime yearDateHourMinute){
+
+        String year = String.valueOf(yearDateHourMinute.getYear());
+        String month = String.valueOf(yearDateHourMinute.getMonth());
+        String date = String.valueOf(yearDateHourMinute.getDayOfMonth());
+
+        return "[" + year + "/" + month + "/" + date + "]";
+    }
+
+    public static String localDateTimeToday() {
+        LocalDateTime now = LocalDateTime.now();
+
+        String year = String.valueOf(now.getYear());
+        String month = String.valueOf(now.getMonthValue());
+        String date = String.valueOf(now.getDayOfMonth());
+
+        return "[" + year + "/" + month + "/" + date + "]";
+    }
 }
