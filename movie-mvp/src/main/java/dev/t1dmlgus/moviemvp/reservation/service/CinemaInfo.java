@@ -1,59 +1,49 @@
 package dev.t1dmlgus.moviemvp.reservation.service;
 
-import dev.t1dmlgus.moviemvp.reservation.domain.Cinema;
+import dev.t1dmlgus.moviemvp.reservation.domain.Movie;
 import dev.t1dmlgus.moviemvp.reservation.domain.Theater;
-import lombok.Builder;
+import dev.t1dmlgus.moviemvp.reservation.util.DateUtil;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
 @Getter
-public class CinemaInfo {
+public class CinemaInfo<T> {
 
     private final String cinemaName;
-    private final List<TheaterOfCinema> theatersOfCinema;
+    private final List<T> listOfCinema;
 
-
-    @Builder
-    private CinemaInfo(String cinemaName, List<TheaterOfCinema> theatersOfCinema) {
+    public CinemaInfo(String cinemaName, List<T> screenList) {
         this.cinemaName = cinemaName;
-        this.theatersOfCinema = theatersOfCinema;
+        listOfCinema = screenList;
     }
 
+    public String cinemaResponse(){
 
-    @Getter
-    public static class TheaterOfCinema {
-        private final String theaterNo;
-        private final int seat;
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
 
-        @Builder
-        private TheaterOfCinema(String theaterNo, int seat) {
-            this.theaterNo = theaterNo;
-            this.seat = seat;
+        if (listOfCinema.get(0).getClass().equals(Theater.class)) {
+            for (T t : listOfCinema) {
+                index++;
+                Theater t1 = (Theater) t;
+                sb.append(t1.getTheaterName());
+                if (index < listOfCinema.size())
+                    sb.append(", ");
+            }
+            return "영화관(" + cinemaName + ") 및 상영관[" + sb + "]이 등록되었습니다.";
+        }
+        if (listOfCinema.get(0).getClass().equals(Movie.class)) {
+            for (T t : listOfCinema) {
+                index++;
+                Movie t1 = (Movie) t;
+                sb.append(t1.getTitle());
+                if (index < listOfCinema.size())
+                    sb.append(", ");
+            }
+            return DateUtil.localDateTimeToday() + " 영화관(" + cinemaName + ")에 영화[" + sb + "] 상영리스트가 초기화 되었습니다.";
         }
 
-        public static TheaterOfCinema newInstance(String theaterNo, int seat) {
-            return TheaterOfCinema.builder()
-                    .theaterNo(theaterNo)
-                    .seat(seat)
-                    .build();
-        }
-
-    }
-
-    public static CinemaInfo of(Cinema cinema){
-
-        List<TheaterOfCinema> theaterOfCinemas = new ArrayList<>();
-        for (Theater theater : cinema.getTheaters()) {
-            theaterOfCinemas.add(TheaterOfCinema.newInstance(theater.getTheaterName(), theater.getChairs()));
-;        }
-
-        return CinemaInfo.builder()
-                .cinemaName(cinema.getCinemaName())
-                .theatersOfCinema(theaterOfCinemas)
-                .build();
-
+        return null;
     }
 }

@@ -25,13 +25,14 @@ public class CinemaService {
 
 
     @Transactional
-    public void todayScreenInit(ScreenSchedule screenSchedule) {
+    public CinemaInfo<Movie> todayScreenInit(ScreenSchedule screenSchedule) {
 
         // 영화관 별 상영표 등록
         Cinema cinema = Cinema.cinemaInstances.get(screenSchedule.getCinemaName());
         List<Screen> screenList = cinema.todayScreenInit(screenSchedule);
 
         screenRepository.saveAll(screenList);
+        return new CinemaInfo<>(cinema.getCinemaName(), cinema.getShowingMovieFromMovie());
     }
 
     // 영화(상영) 예매하기
@@ -71,11 +72,11 @@ public class CinemaService {
 
 
 
-    public CinemaInfo createCinema(CinemaToRegisterCommand cinemaToRegisterCommand) {
+    public CinemaInfo<Theater> createCinema(CinemaToRegisterCommand cinemaToRegisterCommand) {
 
         Cinema cinema = cinemaToRegisterCommand.toEntity();
         Cinema savedCinema = theaterRepository.save(cinema);
 
-        return CinemaInfo.of(savedCinema);
+        return new CinemaInfo<>(savedCinema.getCinemaName(), cinema.getTheaters());
     }
 }

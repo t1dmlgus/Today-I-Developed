@@ -1,25 +1,19 @@
 package dev.t1dmlgus.moviemvp.reservation.service;
 
 
-import dev.t1dmlgus.moviemvp.reservation.common.exception.DuplicateMovieException;
 import dev.t1dmlgus.moviemvp.reservation.common.exception.EntityNotFoundException;
 import dev.t1dmlgus.moviemvp.reservation.common.exception.ErrorType;
+import dev.t1dmlgus.moviemvp.reservation.common.exception.movie.DuplicateMovieException;
 import dev.t1dmlgus.moviemvp.reservation.domain.Movie;
 import dev.t1dmlgus.moviemvp.reservation.domain.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @RequiredArgsConstructor
 @Service
 public class MovieService {
-
-
-    @PersistenceContext
-    EntityManager em;
 
     private final MovieRepository movieRepository;
 
