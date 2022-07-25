@@ -1,6 +1,7 @@
 package dev.t1dmlgus.moviemvp.reservation.domain;
 
-import dev.t1dmlgus.moviemvp.reservation.util.DateUtil;
+import dev.t1dmlgus.moviemvp.reservation.common.util.DateUtil;
+import dev.t1dmlgus.moviemvp.reservation.common.util.TokenUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,19 +14,25 @@ import java.util.HashMap;
 import java.util.List;
 
 
-@NoArgsConstructor
-@ToString(exclude = {"theaters", "screens"})
-@Getter
-@Entity
-@Table(name = "cinemas")
-public class Cinema {       // 영화관
 
+@ToString(exclude = {"theaters", "screens"})
+@NoArgsConstructor
+@Getter
+@Table(name = "cinemas")
+@Entity
+public class Cinema extends AbstractEntity{       // 영화관
+
+    // 영화관 싱글톤
     public static HashMap<String, Cinema> cinemaInstances = new HashMap<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long cinemaId;
-    public String cinemaName;
+    private Long cinemaId;
+
+//    @UniqueElements
+    private String cinemaToken;
+
+    private String cinemaName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
     private List<Theater> theaters = new ArrayList<>();
@@ -35,16 +42,18 @@ public class Cinema {       // 영화관
 
 
     @Builder
-    private Cinema(String cinemaName, List<Theater> theaters) {
+    private Cinema(String cinemaName, List<Theater> theaters, String area) {
         this.cinemaName = cinemaName;
         this.theaters = theaters;
+
+        this.cinemaToken = TokenUtil.generateToken(area);
     }
 
-
-    public static Cinema newInstance(String cinemaName, List<Theater> theaters) {
+    public static Cinema newInstance(String cinemaName, List<Theater> theaters, String area) {
         Cinema cinema = Cinema.builder()
                 .cinemaName(cinemaName)
                 .theaters(theaters)
+                .area(area)
                 .build();
 
         cinemaInstances.put(cinemaName, cinema);
@@ -54,25 +63,12 @@ public class Cinema {       // 영화관
 
     // 연관관계
     private void addTheaterToCinema(List<Theater> theaters) {
+        int theaterNo = 1;
         for (Theater theater : theaters) {
-            theater.setCinema(this);
+            theater.setCinema(this, theaterNo);
+            theaterNo++;
         }
     }
-
-
-
-//    public static Theater getInstance(TheaterPlace theaterPlace) {
-//        // 해당 영화관이 존재할 경우 가져오고, 아니면 만듬
-//
-//        Theater theater = theaterInstance.get(theaterPlace.getPlace());
-//        if (Objects.isNull(theater)) {
-//            theater = new Theater(theaterPlace);
-//            theaterInstance.put(theaterPlace.getPlace(), theater);
-//            return theater;
-//        }
-//        return theater;
-//    }
-
 
 
     public List<Movie> getShowingMovieFromMovie(){
@@ -85,10 +81,8 @@ public class Cinema {       // 영화관
 
         // 상영리스트 초기화
         screens.clear();
-
         // 상영영화 가져오기
         List<Movie> showingMovie = this.getShowingMovieFromMovie();
-
         // 상영날짜
         String date = screenSchedule.getDate();
 
