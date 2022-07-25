@@ -1,6 +1,7 @@
 package dev.t1dmlgus.moviemvp.reservation.domain;
 
 
+import dev.t1dmlgus.moviemvp.reservation.common.util.TokenUtil;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,8 @@ public class Theater {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long theaterId;
+
+    private String theaterToken;
     private final String theaterName;
     private final int chairs;
 
@@ -45,16 +48,18 @@ public class Theater {
         this.theaterGrade = TheaterGrade.GENERAL;
     }
 
-    public static Theater newInstance(String theaterName, int chairs){
+    public static Theater newInstance(String theaterName, String seat){
         return Theater.builder()
                 .theaterName(theaterName)
-                .chairs(chairs)
+                .chairs(Integer.parseInt(seat))
                 .build();
     }
 
-    public void setCinema(Cinema cinema) {
+    public void setCinema(Cinema cinema, int theaterNo) {
         this.cinema = cinema;
+        this.theaterToken = TokenUtil.generateTheaterToken(cinema.getCinemaToken(), theaterNo);
     }
+
 
     public void changeCinemaGradeToSpecial(){
         this.theaterGrade = TheaterGrade.SPECIAL;
