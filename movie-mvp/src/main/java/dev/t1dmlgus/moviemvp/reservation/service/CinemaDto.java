@@ -11,7 +11,18 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *
+ * class : 영화관 DTO
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        영화관 등록 DTO 구현
+ * 2022-07-26           이의현        상영관 등록 DTO 구현
+ * 2022-07-26           이의현        @Valid 추가 **
+ *
+ */
 public class CinemaDto {
 
     @ToString

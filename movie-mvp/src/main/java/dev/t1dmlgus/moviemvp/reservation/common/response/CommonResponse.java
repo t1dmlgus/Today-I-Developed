@@ -5,6 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ *
+ * class : 공통 응답 DTO
+ * version 1.0
+ * ==========================================
+ * DATE              DEVELOPER   NOTE
+ * ==========================================
+ * 2022-07-26        이의현        HTTP 상태코드, 응답 메시지, 응답 데이터, API 성공 유무
+ *                               제네릭 타입의 응답데이터
+ *
+ *
+ *
+ */
+
 @Getter
 public class CommonResponse<T> {
 
@@ -15,7 +29,7 @@ public class CommonResponse<T> {
     private final ResultCode result = ResultCode.SUCCESS;
 
     @Builder
-    public CommonResponse(String message, T data) {
+    private CommonResponse(String message, T data) {
         this.statusCode = HttpStatus.OK;
         this.message = message;
         this.data = data;

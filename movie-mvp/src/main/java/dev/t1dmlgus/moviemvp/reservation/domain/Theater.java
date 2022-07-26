@@ -5,6 +5,18 @@ import dev.t1dmlgus.moviemvp.reservation.common.util.TokenUtil;
 import lombok.*;
 
 import javax.persistence.*;
+/**
+ * class : 상영관 Domain
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        정적 팩토리 메서드 구현
+ * 2022-07-26           이의현        상영관 등급 enum
+ * 2022-07-26           이의현        영화관 등급 별 결제 금액 계산
+ * 2022-07-26           이의현        인원 별 좌석 선택
+ *
+ */
 
 @ToString
 @NoArgsConstructor(force = true)
@@ -69,7 +81,6 @@ public class Theater {
 
     // 좌석선택
     public int seatSelection(int audience) {
-
         // 좌석 선택 로직 구현 필요
         return calculatePayment(audience);
     }

@@ -2,7 +2,7 @@ package dev.t1dmlgus.moviemvp.reservation.presentation;
 
 import dev.t1dmlgus.moviemvp.reservation.common.response.CommonResponse;
 import dev.t1dmlgus.moviemvp.reservation.service.MovieService;
-import dev.t1dmlgus.moviemvp.reservation.service.MovieToRegisterCommand;
+import dev.t1dmlgus.moviemvp.reservation.service.MovieDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ *
+ * class : 영화 API
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        영화등록 기능
+ * 2022-07-26           이의현        공통 응답 모듈 추가
+ * 2022-07-26           이의현        영화상태 변경 기능
+ *
+ *
+ */
 
 @RequiredArgsConstructor
 @RestController
@@ -20,8 +33,8 @@ public class MovieApiController {
     private final MovieService movieService;
 
     @PostMapping("/api/v1/movies")
-    public ResponseEntity<CommonResponse<String>> registerMovie(@RequestBody @Valid MovieToRegisterCommand movieToRegisterCommand) {
-        movieService.registerMovie(movieToRegisterCommand);
+    public ResponseEntity<CommonResponse<String>> registerMovie(@RequestBody @Valid MovieDto.RegisterMovieReq movieReq) {
+        movieService.registerMovie(movieReq);
         CommonResponse<String> response = CommonResponse.of("영화가 등록되었습니다.");
         return ResponseEntity.ok(response);
     }

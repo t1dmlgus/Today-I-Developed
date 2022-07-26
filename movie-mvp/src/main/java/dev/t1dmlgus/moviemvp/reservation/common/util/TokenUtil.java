@@ -1,26 +1,37 @@
 package dev.t1dmlgus.moviemvp.reservation.common.util;
 
-import dev.t1dmlgus.moviemvp.reservation.common.exception.BusinessException;
 import dev.t1dmlgus.moviemvp.reservation.common.exception.ErrorType;
 import dev.t1dmlgus.moviemvp.reservation.domain.Cinema;
+import dev.t1dmlgus.moviemvp.reservation.common.exception.NotValidException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ *
+ * class : 토큰 생성 Util
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        영화관토큰 생성로직
+ * 2022-07-26           이의현        상영관토큰 생성로직
+ * 2022-07-26           이의현        지역 별 토큰타입(areaCode) 조회
+ *
+ */
 
 public class TokenUtil {
 
-    public static String generateToken(String area) {
+    public static String generateCinemaToken(String area) {
 
-        String areaCode = AreaType.getAreaCode(area);// 1
+        String areaCode = TheaterAreaType.getAreaCode(area);// 1
         HashMap<String, Cinema> cinemaInstances = Cinema.cinemaInstances;
 
         long count = cinemaInstances.values().stream()
                 .filter(i -> i.getCinemaToken().substring(0, 1).equals(areaCode))
                 .count();
-
         return areaCode + String.format("%03d", count+1);
     }
 
@@ -31,7 +42,7 @@ public class TokenUtil {
 
     @Getter
     @RequiredArgsConstructor
-    public static enum AreaType {
+    public static enum TheaterAreaType {
 
         SEOUL("1", "서울"),
         GYEONGGIDO_INCHEON("3", "경기/인천"),
@@ -46,13 +57,11 @@ public class TokenUtil {
         private final String areaName;
 
         public static String getAreaCode(String areaName) {
-
-            return Arrays.stream(AreaType.values())
+            return Arrays.stream(TheaterAreaType.values())
                     .filter(i -> i.getAreaName().equals(areaName))
-                    .map(AreaType::getAreaCode)
+                    .map(TheaterAreaType::getAreaCode)
                     .findFirst()
-                    .orElseThrow(()-> new BusinessException(ErrorType.AREA_INVALID_PARAMETER));
+                    .orElseThrow(()-> new NotValidException(ErrorType.AREA_INVALID_PARAMETER));
         }
     }
-
 }

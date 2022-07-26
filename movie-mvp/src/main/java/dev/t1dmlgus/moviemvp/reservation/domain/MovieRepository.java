@@ -1,7 +1,17 @@
 package dev.t1dmlgus.moviemvp.reservation.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
+/**
+ *
+ * class : 영화 Domain
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        영화 존재유무 쿼리메서드(영화명)
+ *
+ *
+ */
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     boolean existsByTitle(String movieTitle);

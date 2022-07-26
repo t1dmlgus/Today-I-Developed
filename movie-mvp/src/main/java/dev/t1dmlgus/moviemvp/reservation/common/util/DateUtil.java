@@ -1,7 +1,19 @@
-package dev.t1dmlgus.moviemvp.reservation.util;
+package dev.t1dmlgus.moviemvp.reservation.common.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ *
+ * class : Date Util
+ * version 1.0
+ * ==========================================
+ * DATE              DEVELOPER   NOTE
+ * ==========================================
+ * 2022-07-26        이의현        서비스 날짜 Util
+ *
+ *
+ */
 public class DateUtil {
 
     public static LocalDateTime toLocalDateTime(String date, String time) {
@@ -31,5 +43,15 @@ public class DateUtil {
         String date = String.valueOf(now.getDayOfMonth());
 
         return "[" + year + "/" + month + "/" + date + "]";
+    }
+
+    public static boolean compareToday(String date) {
+
+        int year = Integer.parseInt(date.substring(0, 4));
+        int month = Integer.parseInt(date.substring(4, 6));
+        int day = Integer.parseInt(date.substring(6));
+
+        LocalDate screenScheduleDate = LocalDate.of(year, month, day);
+        return LocalDateTime.now().toLocalDate().isEqual(screenScheduleDate);
     }
 }
