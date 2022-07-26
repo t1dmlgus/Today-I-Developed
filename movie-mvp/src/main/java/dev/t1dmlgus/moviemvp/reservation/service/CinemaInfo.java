@@ -1,21 +1,33 @@
 package dev.t1dmlgus.moviemvp.reservation.service;
 
+import dev.t1dmlgus.moviemvp.reservation.common.util.DateUtil;
 import dev.t1dmlgus.moviemvp.reservation.domain.Movie;
 import dev.t1dmlgus.moviemvp.reservation.domain.Theater;
-import dev.t1dmlgus.moviemvp.reservation.util.DateUtil;
 import lombok.Getter;
 
 import java.util.List;
 
+/**
+ *
+ * class : 영화관 응답 DTO
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        영화관 등록 & 상영리스트 등록 시
+ *                                  데이터 타입을 제네릭으로 구현
+ *                                  (상영관, 영화)
+ *
+ */
 @Getter
 public class CinemaInfo<T> {
 
     private final String cinemaName;
     private final List<T> listOfCinema;
 
-    public CinemaInfo(String cinemaName, List<T> screenList) {
+    public CinemaInfo(String cinemaName, List<T> listOfCinema) {
         this.cinemaName = cinemaName;
-        listOfCinema = screenList;
+        this.listOfCinema = listOfCinema;
     }
 
     public String cinemaResponse(){
@@ -24,20 +36,20 @@ public class CinemaInfo<T> {
         int index = 0;
 
         if (listOfCinema.get(0).getClass().equals(Theater.class)) {
-            for (T t : listOfCinema) {
+            for (T list : listOfCinema) {
                 index++;
-                Theater t1 = (Theater) t;
-                sb.append(t1.getTheaterName());
+                Theater theater = (Theater) list;
+                sb.append(theater.getTheaterName());
                 if (index < listOfCinema.size())
                     sb.append(", ");
             }
             return "영화관(" + cinemaName + ") 및 상영관[" + sb + "]이 등록되었습니다.";
         }
         if (listOfCinema.get(0).getClass().equals(Movie.class)) {
-            for (T t : listOfCinema) {
+            for (T list : listOfCinema) {
                 index++;
-                Movie t1 = (Movie) t;
-                sb.append(t1.getTitle());
+                Movie movie = (Movie) list;
+                sb.append(movie.getTitle());
                 if (index < listOfCinema.size())
                     sb.append(", ");
             }

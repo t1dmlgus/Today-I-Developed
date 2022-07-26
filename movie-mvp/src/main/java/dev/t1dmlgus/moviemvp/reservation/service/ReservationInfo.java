@@ -5,6 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ *
+ * class : 예매 응답 DTO
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-07-26           이의현        예매 응답 DTO
+ *
+ */
+
 @ToString
 @Getter
 public class ReservationInfo {
