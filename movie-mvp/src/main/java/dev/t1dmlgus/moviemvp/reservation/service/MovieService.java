@@ -1,9 +1,9 @@
 package dev.t1dmlgus.moviemvp.reservation.service;
 
 
+import dev.t1dmlgus.moviemvp.reservation.common.exception.DuplicateException;
 import dev.t1dmlgus.moviemvp.reservation.common.exception.EntityNotFoundException;
 import dev.t1dmlgus.moviemvp.reservation.common.exception.ErrorType;
-import dev.t1dmlgus.moviemvp.reservation.common.exception.DuplicateException;
 import dev.t1dmlgus.moviemvp.reservation.domain.Movie;
 import dev.t1dmlgus.moviemvp.reservation.domain.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 2022-07-26           이의현        영화 등록 서비스
  * 2022-07-26           이의현        영화상태 변경 서비스
  * 2022-07-26           이의현        영화 중복 확인
+ * 2022-07-27           이의현        영화 상세정보 조회 서비스
+ * 2022-07-27           이의현        기본키(movieId) -> 대체키(movieToken)
  *
  */
 @RequiredArgsConstructor
@@ -29,25 +31,35 @@ public class MovieService {
     private final MovieRepository movieRepository;
 
     @Transactional
-    public void registerMovie(MovieDto.RegisterMovieReq movieReq) {
+    public MovieInfo registerMovie(MovieDto.RegisterMovieReq movieReq) {
 
         if (isExistMovie(movieReq.getTitle())) {
             throw new DuplicateException(ErrorType.MOVIE_ENTITY_NOT_FOUND);
         }
-        movieRepository.save(movieReq.toMovieEntity());
+        Movie registeredMovie = movieRepository.save(movieReq.toMovieEntity());
+        return MovieInfo.getToken(registeredMovie.getMovieToken());
     }
 
     @Transactional
-    public void changeStatusToShowing(Long movieId) {
+    public MovieInfo changeStatusToShowing(String movieToken) {
 
-        Movie movie = movieRepository.findById(movieId)
+        Movie movie = movieRepository.findByMovieToken(movieToken)
                 .orElseThrow(()-> new EntityNotFoundException(ErrorType.MOVIE_ENTITY_NOT_FOUND));
         // 변경감지
         movie.changeStatusToShowing();
+        return MovieInfo.getToken(movie.getMovieToken());
     }
 
     @Transactional(readOnly = true)
     public boolean isExistMovie(String movieTitle){
         return movieRepository.existsByTitle(movieTitle);
+    }
+
+
+    @Transactional(readOnly = true)
+    public MovieInfo getMovieDetails(String movieToken){
+        Movie movie = movieRepository.findByMovieToken(movieToken)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorType.MOVIE_ENTITY_NOT_FOUND));
+        return MovieInfo.from(movie);
     }
 }

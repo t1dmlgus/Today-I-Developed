@@ -20,7 +20,7 @@ import lombok.ToString;
 @Getter
 public class ReservationInfo {
 
-    private final String reservationId;
+    private final String reservationToken;
     private final String movie;
     private final String runningTime;
     private final String startTime;
@@ -32,8 +32,8 @@ public class ReservationInfo {
 
 
     @Builder
-    public ReservationInfo(String reservationId, String movie, String runningTime, String startTime, int totalPrice, int audience, String theater, String cinema, String theaterGrade) {
-        this.reservationId = reservationId;
+    public ReservationInfo(String reservationToken, String movie, String runningTime, String startTime, int totalPrice, int audience, String theater, String cinema, String theaterGrade) {
+        this.reservationToken = reservationToken;
         this.movie = movie;
         this.runningTime = runningTime;
         this.startTime = startTime;
@@ -50,7 +50,7 @@ public class ReservationInfo {
     public static ReservationInfo from(Reservation reservation){
 
         return ReservationInfo.builder()
-                .reservationId(reservation.getId().toString())
+                .reservationToken(reservation.getReservationToken())
                 .movie(reservation.getScreen().getMovie().getTitle())
                 .runningTime(reservation.getScreen().getMovie().getRunningTime())
                 .startTime(reservation.getScreen().getStartTime().toString())

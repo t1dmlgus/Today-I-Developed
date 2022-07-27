@@ -1,10 +1,11 @@
 package dev.t1dmlgus.moviemvp.reservation.common.util;
 
 import dev.t1dmlgus.moviemvp.reservation.common.exception.ErrorType;
-import dev.t1dmlgus.moviemvp.reservation.domain.Cinema;
 import dev.t1dmlgus.moviemvp.reservation.common.exception.NotValidException;
+import dev.t1dmlgus.moviemvp.reservation.domain.Cinema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +20,8 @@ import java.util.HashMap;
  * 2022-07-26           이의현        영화관토큰 생성로직
  * 2022-07-26           이의현        상영관토큰 생성로직
  * 2022-07-26           이의현        지역 별 토큰타입(areaCode) 조회
+ * 2022-07-27           이의현        영화 토큰 생성
+ * 2022-07-27           이의현        예매 토큰 생성
  *
  */
 
@@ -39,6 +42,24 @@ public class TokenUtil {
         String theaterNum = String.format("%02d", index);
         return cinemaToken + theaterNum;
     }
+
+    public static String generateMovieToken(){
+        // 추후, 장르 별 코드 추가
+        int movieCode = 1;
+        int count = 4;
+        String movieRandomToken = RandomStringUtils.randomNumeric(count);
+        return movieCode + movieRandomToken;
+    }
+
+    public static String reservationToken(){
+        // 8자리, 구상 중
+        int reservationCode = 1;
+        int count = 7;
+        String reservationRandomToken = RandomStringUtils.randomNumeric(count);
+        return reservationCode + reservationRandomToken;
+    }
+
+
 
     @Getter
     @RequiredArgsConstructor

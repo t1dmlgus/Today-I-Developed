@@ -16,6 +16,7 @@ import java.util.List;
  * 2022-07-26           이의현        정적 팩토리 메서드 구현
  * 2022-07-26           이의현        영화상태 변경 비즈니스 로직
  * 2022-07-26           이의현        상영중인 영화 리스트 추가
+ * 2022-07-27           이의현        영화 토큰 필드 추가
  *
  */
 
@@ -32,6 +33,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
 
+    private final String movieToken;
     private final String title;
     private final String runningTime;
 
@@ -43,6 +45,7 @@ public class Movie {
         this.title = title;
         this.runningTime = runningTime;
         this.status = Status.BEFORE_SCREENING;
+        this.movieToken = TokenUtil.generateMovieToken();
     }
 
     public static Movie newInstance(String title, String runningTime) {
