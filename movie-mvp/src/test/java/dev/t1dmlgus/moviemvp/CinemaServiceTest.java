@@ -1,9 +1,9 @@
 package dev.t1dmlgus.moviemvp;
 
-import dev.t1dmlgus.moviemvp.reservation.domain.CinemaRepository;
-import dev.t1dmlgus.moviemvp.reservation.domain.Movie;
-import dev.t1dmlgus.moviemvp.reservation.domain.MovieRepository;
-import dev.t1dmlgus.moviemvp.reservation.service.CinemaService;
+import dev.t1dmlgus.moviemvp.domain.cinema.CinemaRepository;
+import dev.t1dmlgus.moviemvp.domain.movie.Movie;
+import dev.t1dmlgus.moviemvp.domain.movie.MovieRepository;
+import dev.t1dmlgus.moviemvp.service.cinema.CinemaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
