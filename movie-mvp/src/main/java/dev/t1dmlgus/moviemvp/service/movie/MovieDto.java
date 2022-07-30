@@ -1,6 +1,7 @@
 package dev.t1dmlgus.moviemvp.service.movie;
 
 import dev.t1dmlgus.moviemvp.domain.movie.Movie;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 
 public class MovieDto {
 
+    @AllArgsConstructor
     @ToString
     @Getter
     public static class RegisterMovieReq {
