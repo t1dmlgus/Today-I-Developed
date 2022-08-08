@@ -1,5 +1,5 @@
-# Today-I-developed
-오늘도 나는 개발했다
+# Today I develop
+오늘도 나는 개발한다.
 
 
 ## 개발일지
