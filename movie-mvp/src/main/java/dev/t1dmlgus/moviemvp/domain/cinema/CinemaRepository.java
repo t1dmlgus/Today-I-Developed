@@ -3,8 +3,6 @@ package dev.t1dmlgus.moviemvp.domain.cinema;
 import dev.t1dmlgus.moviemvp.domain.theater.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
 /**
  *
  * class : 영화관 Repository
@@ -17,5 +15,4 @@ import java.util.Optional;
  */
 public interface CinemaRepository extends JpaRepository<Theater, Long> {
 
-    Optional<Cinema> findByCinemaName(String cinemaName);
 }

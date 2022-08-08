@@ -20,7 +20,12 @@ public class DateUtil {
         int year = Integer.parseInt(date.substring(0, 4));
         int month = Integer.parseInt(date.substring(4, 6));
         int day = Integer.parseInt(date.substring(6));
+
         int hour = Integer.parseInt(time.substring(0, 2));
+        if(hour > 23){
+            hour -= 24;
+            day += 1;
+        }
         int minute = Integer.parseInt(time.substring(2));
 
         return LocalDateTime.of(year, month, day, hour, minute);

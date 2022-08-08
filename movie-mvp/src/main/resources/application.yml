@@ -1,19 +1,19 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:movie-mvp
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
 #  datasource:
-#    url: jdbc:mysql://localhost:3306/tt?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: root
-#    password: 1234
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:h2:mem:movie-mvp
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/movie_mvp?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
