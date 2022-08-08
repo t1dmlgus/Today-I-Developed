@@ -57,7 +57,7 @@ public class Cinema extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
     private List<Theater> theaters = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "cinema")
     private List<Screen> screens = new ArrayList<>();
 
     @Builder
@@ -125,7 +125,7 @@ public class Cinema extends AbstractEntity {
 
                 //상영 시간
                 LocalDateTime startTime = DateUtil.toLocalDateTime(today, theaterDetail.getStartTime());
-                screens.add(Screen.newInstance(movie, theater, startTime));
+//                screens.add(Screen.newInstance(movie, theater, startTime));
             }
         }
         // 연관관계 추가(상영시간표)

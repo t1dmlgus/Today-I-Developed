@@ -1,5 +1,6 @@
 package dev.t1dmlgus.moviemvp.domain.screen;
 
+import dev.t1dmlgus.moviemvp.domain.cinema.Cinema;
 import dev.t1dmlgus.moviemvp.domain.movie.Movie;
 import dev.t1dmlgus.moviemvp.domain.reservation.Reservation;
 import dev.t1dmlgus.moviemvp.domain.theater.Theater;
@@ -39,6 +40,11 @@ public class Screen {
     private int extraSeat ;
 
     @ManyToOne
+    @JoinColumn(name = "cinema_id")
+    private final Cinema cinema;
+
+
+    @ManyToOne
     @JoinColumn(name = "theater_id")
     private final Theater theater;
 
@@ -49,15 +55,17 @@ public class Screen {
 
 
     @Builder
-    private Screen(Movie movie, Theater theater, LocalDateTime startTime) {
+    private Screen(Cinema cinema, Movie movie, Theater theater, LocalDateTime startTime) {
         this.extraSeat = theater.getChairs();
+        this.cinema = cinema;
         this.theater = theater;
         this.movie = movie;
         this.startTime = startTime;
     }
 
-    public static Screen newInstance(Movie movie, Theater theater, LocalDateTime startTime){
-         return Screen.builder()
+    public static Screen newInstance(Cinema cinema, Movie movie, Theater theater, LocalDateTime startTime){
+        return Screen.builder()
+                .cinema(cinema)
                 .movie(movie)
                 .theater(theater)
                 .startTime(startTime)

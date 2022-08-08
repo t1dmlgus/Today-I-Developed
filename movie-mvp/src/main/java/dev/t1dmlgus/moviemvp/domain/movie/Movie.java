@@ -1,5 +1,7 @@
 package dev.t1dmlgus.moviemvp.domain.movie;
 
+import dev.t1dmlgus.moviemvp.common.error.ErrorType;
+import dev.t1dmlgus.moviemvp.common.error.exception.EntityNotFoundException;
 import dev.t1dmlgus.moviemvp.common.util.TokenUtil;
 import lombok.*;
 
@@ -77,4 +79,12 @@ public class Movie {
     }
 
 
+    public static Movie getMovie(String movieTitle) {
+
+        return showingMovie.stream().filter(x -> x.getTitle().equals(movieTitle))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException(ErrorType.MOVIE_ENTITY_NOT_FOUND));
+    }
+
 }
+

@@ -22,6 +22,7 @@ import javax.persistence.*;
 @NoArgsConstructor(force = true)
 @ToString
 @Getter
+@Table(name = "reservations")
 @Entity
 public class Reservation {
 

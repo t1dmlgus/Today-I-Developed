@@ -87,7 +87,6 @@ public class CinemaService {
     public Reservation checkReservationOfMovie(){
 
         Long reservationMovie = 1L;
-
         Reservation reservation = reservationRepository.findById(reservationMovie)
                 .orElseThrow(RuntimeException::new);
 
