@@ -22,3 +22,7 @@ spring:
 
   jackson:
     default-property-inclusion: non_null
+
+  batch:
+    job:
+      enabled: false

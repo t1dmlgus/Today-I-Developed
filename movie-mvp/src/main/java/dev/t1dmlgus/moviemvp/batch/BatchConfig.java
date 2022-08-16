@@ -27,11 +27,20 @@ import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
-
+/**
+ *
+ * class : 배치
+ * version 1.0
+ * ==================================================
+ * DATE                 DEVELOPER   NOTE
+ * ==================================================
+ * 2022-08-16           이의현        일 별 상영 시간표 업데이트 job, step 생성
+ *
+ */
 @RequiredArgsConstructor
 @Configuration
 @Slf4j
-public class CinemaConfiguration {
+public class BatchConfig {
 
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -55,7 +64,6 @@ public class CinemaConfiguration {
     public Step screenMovieStep() throws Exception {
 
         log.info("screenMovieStep >> ");
-
         return stepBuilderFactory.get("screenMovieStep")
                 .<Movie, Movie>chunk(10)
                 .reader(this.jpaCursorItemReader())
@@ -109,7 +117,6 @@ public class CinemaConfiguration {
 
 
     private ItemProcessor<? super Cinema, ? extends Cinema> cinemaProcess() {
-
         return cinema -> {
             List<Theater> theaters = cinema.getTheaters();
             log.info(String.valueOf(theaters));
@@ -119,7 +126,6 @@ public class CinemaConfiguration {
 
 
     private ItemWriter<? super Cinema> cinemaItemWriter() {
-
         return items -> {
             items.forEach(x -> Cinema.cinemaInstances.put(x.getCinemaName(), x));
         };
@@ -139,7 +145,6 @@ public class CinemaConfiguration {
                 .processor(itemProcessor())
                 .writer(itemWriter())
                 .build();
-
     }
 
 
@@ -180,11 +185,7 @@ public class CinemaConfiguration {
 
 
     private ItemProcessor<? super ScreenDto,? extends Screen> itemProcessor() {
-
-        return item -> {
-            Cinema cinema = Cinema.cinemaInstances.get(item.getCinemaName());
-            return item.toScreenEntity();
-        };
+        return ScreenDto::toScreenEntity;
     }
 
     private ItemWriter<? super Screen> itemWriter() throws Exception {
